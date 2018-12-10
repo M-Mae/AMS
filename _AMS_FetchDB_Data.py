@@ -25,19 +25,23 @@ def create_connection(db_file):
     return None
 
 
-def fetch_QueryDB (searchTerm, ):
+def fetch_QueryDB (searchTerm):
     database = "D:\\Student Data\Documents\AMS\AssetManagementSystem.db"
     conn = create_connection(database)
-
-
-
-    sql = "SELECT * FROM files WHERE name LIKE '%?%'"
-    cur = conn.cursor()
-    cur.execute(sql,searchTerm)
-    results = cur.fetchall()
-
-    print (results)
-    #return results
+    Term = ["%"+ str(searchTerm) +"%", "%"+ str(searchTerm) +"%"]
+    print(searchTerm)
+    sql = "SELECT * FROM files WHERE name LIKE (?) OR asset_pipelineState LIKE (?)"
+    if conn is not None:
+        with conn:
+            cur = conn.cursor()
+            cur.execute(sql, Term)
+            results = cur.fetchall()
+            print(Term)
+            print(sql)
+            print (results)
+            return results
+    else:
+        print("unable to connect to Database")
 
 def fetchDB_AsArray ():
     database = "D:\\Student Data\Documents\AMS\AssetManagementSystem.db"
