@@ -1,25 +1,29 @@
 # -*- coding: utf-8 -*-
 from PySide2 import QtCore, QtGui, QtWidgets
-import AMS_MainUI
+import AMS_MAIN_ui
 from types import *
 import maya.cmds as cmds
 import sys
 sys.path.append('D:/Student Data/Documents/AMS')
 import _AMS_FetchDB_Data
+from AMS_ListModel import ListModel as ListModel
 
 
 class AMS_Widget(QtWidgets.QWidget):
-    def __init__(self, parent = None, currentName=None):
+    def __init__(self, parent = None):
         #call the widget constructor
         super(AMS_Widget, self).__init__(parent=parent)
 
         #create widget object from ui file
-        self.ui = AMS_MainUI.Ui_Form()
+        self.ui = AMS_MAIN_ui.Ui_Form()
         self.ui.setupUi(self)
+
+        self.dataModel = ListModel()
+        self.ui.listView.setModel(self.dataModel)
 
         #Perhaps here we might add check for favorites and display in the results to start.
 
-        #if the feild is changed, check that against the database. For now we'll print some test strings
+        #if the field is changed, check that against the database. For now we'll print some test strings
         @QtCore.Slot(name='searchChanged')
         def searchChanged ():
             #get local version of array to search from
@@ -27,19 +31,13 @@ class AMS_Widget(QtWidgets.QWidget):
             #cache local copy of search term
             searchTerm = self.ui.lineEdit.text()
 
-            #search array and return results
-            #DB_Array = _AMS_FetchDB_Data.fetchDB_AsArray()
-            #print out just the names in that results box
-
-            #right click context menu to reference, import, etc
-
-
-
-            message = ["Testing", "123", "Hello", "World"]
-            message.append(searchTerm)
-            self.ui.textBrowser.setText('\n'.join(str(mess) for mess in message))
-            if len(searchTerm) == 0:
-                self.ui.textBrowser.clear()
+            print(type(self.dataModel))
+            print(str(self.dataModel.dataTable))
+            self.dataModel.dataTable = self.dataModel.updateData(searchTerm)
+            print(type(self.dataModel))
+            print(str(self.dataModel.dataTable))
+            self.ui.listView.setModel(self.dataModel)
+            self.ui.listView.reset()
 
 
         #connecting slots

@@ -5,8 +5,8 @@ import maya.cmds as cmds
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 #import our widget to run
 import sys
-sys.path.append('C:/Users/MAE/Documents/MayaPython/QtFiles/AssetManager')
-from AMS_Widget import AMS_Widget as CoreWidget
+sys.path.append('C:/Users/MAE/Documents/AMS')
+import AMS_Widget
 
 
 def deleteControl(control):
@@ -25,7 +25,7 @@ class dockableAMSWidget(MayaQWidgetDockableMixin, QtWidgets.QDialog):
     #create a widget and lay it out vertically
     def createLayout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
-        self.central_widget = CoreWidget(parent=self)
+        self.central_widget = AMS_Widget.AMS_Widget(parent=self)
         self.main_layout.addWidget(self.central_widget)
         return self.main_layout
 
