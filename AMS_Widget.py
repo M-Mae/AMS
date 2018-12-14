@@ -26,18 +26,15 @@ class AMS_Widget(QtWidgets.QWidget):
         #if the field is changed, check that against the database. For now we'll print some test strings
         @QtCore.Slot(name='searchChanged')
         def searchChanged ():
-            #get local version of array to search from
 
             #cache local copy of search term
             searchTerm = self.ui.lineEdit.text()
 
-            print(type(self.dataModel))
-            print(str(self.dataModel.dataTable))
+            #search the database with the search term and update the list view
             self.dataModel.dataTable = self.dataModel.updateData(searchTerm)
-            print(type(self.dataModel))
-            print(str(self.dataModel.dataTable))
             self.ui.listView.setModel(self.dataModel)
             self.ui.listView.reset()
+
 
 
         #connecting slots
